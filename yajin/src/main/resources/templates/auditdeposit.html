@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<title>押金审核</title>
+		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"/> <link href="../css/bootstrap.min.css" rel="stylesheet">
+		<link href="../css/orderstyle.css" rel="stylesheet">
+		<link href="../css/ordermain.css" rel="stylesheet">
+		<link href="../css/paging.css" rel="stylesheet">
+		<!-- js必备 -->
+		<script type="text/javascript" src="../js/jquery.min.js"></script>
+		<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../js/perfect-scrollbar.min.js"></script>
+		<style>
+/* 			html{
+				height: 100vh;
+			}
+			body{
+				height: 100vh;
+			}	 */					
+		</style>
+	</head>
+	<body data-logobg="color_8" data-sidebarbg="color_8">
+		<div class="lyear-layout-web">
+				<!--头部信息-->
+				<header class="lyear-layout-header">
+				
+					<nav class="navbar navbar-default">
+						<div class="topbar">
+							<div class="topbar-left"></div>
+							<ul class="topbar-right">
+								<li class="dropdown dropdown-profile">
+									<a href="javascript:void(0)" data-toggle="dropdown">
+										<span>欢迎您，管理员 <span class="caret"></span></span>
+									</a>
+									<ul class="dropdown-menu dropdown-menu-right">
+										<!-- <li> <a href="javascript:void(0)" target="ysh-contant"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
+										<li class="divider"></li> -->
+										<li> <a href="../../../../../../新建文件夹/keruyun/keruyun/login.html"><i class="mdi mdi-logout-variant"></i> 退出登录</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</nav>
+				
+				</header>
+				<div class="container-fluid">
+					<div class="lyear-layout-container">
+						
+					<!--start 页面主要内容-->
+					<!--<div class="common-head">
+						<div class="search-group lf-fl">
+							<input type="text" placeholder="请输入要搜索的内容">
+							<button class="btn" type="button">搜索</button>
+						</div>
+					</div>-->
+					<div class="col-lg-12 table-box">
+						<div class="col-lg-12 cash-table">
+							<div class="table-ancestors">
+								<table class="table-group">
+									<thead>
+										<tr>
+											<th>id</th>
+											<th>微信名</th>
+											<th>申请提现的金额</th>
+											<th>查看详细</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody class="table-body supply-tobody">
+										<tr th:each="wor:${lf_list}" >
+											<td><input type="text" readonly="true" th:value="${wor.cashoutOrderId}"></td>
+											<td><input type="text" readonly="true" th:value="${wor.cashoutnickName}"></td>
+											<td><input type="text" readonly="true" th:value="${wor.cashoutMoney}"></td>
+											<td><button type="button" readonly="true" class="allready" th:onclick="'javascript:fun('+${wor.cashoutOrderId}+')'">查看明细</button></td>
+											<td><button type="button" readonly="true" class="allready" onclick="fun()">打款</button></td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+
+
+							<div class="lf-alert">
+
+							</div>
+
+
+							<body>
+								<div id="page">
+									<ul>
+										<li class="xl-prevPage xl-disabled"> <a th:href="@{/checkcashout/index}">首页</a></li>
+										第<a th:text="${list.getPageNum()}"/>页
+										<li class="xl-prevPage xl-disabled">
+											<a th:href="@{/checkcashout/index(pageNum=${list.hasPreviousPage}?${list.prePage}:1)}">上一页</a>
+										</li>
+										<!--<li class="xl-active">1</li>
+										<li>2</li>-->
+										<li class="xl-nextPage">
+											<a th:href="@{/checkcashout/index(pageNum=${list.hasNextPage}?${list.nextPage}:${list.pages})}">下一页</a>
+										</li>
+										<li class="xl-prevPage xl-disabled">
+											<a th:href="@{/checkcashout/index(pageNum=${list.pages})}">尾页</a>
+										</li>
+									</ul>
+								</div>
+							</body>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+			<!--End 页面主要内容-->
+		</div>
+		</div>
+		
+		<div class="lf-alert">
+          <table border="1px" id="tab">
+            <!-- <tr id="topid">
+				 <td>提现人</td>
+				 <td>店铺</td>
+				 <td>店铺id</td>
+				 <td>返现模式</td>
+				 <td>提现时间</td>
+				 <td>提现前余额</td>
+				 <td>申请提现金额</td>
+				 <td>提现后余额</td>
+			 </tr>-->
+
+		  </table>
+		</div>
+	</body>
+	<script>
+		//表格单双行颜色
+		$(".table-group tbody tr:odd").css("background-color", "#f8f8f8"); //改变偶数行背景色
+		//新增弹窗
+		$('.distribute').click(function() {
+			$('.popup-sure').show();
+		});
+		$('.close').click(function() {
+			$(".popup-bg-black").hide();
+		});
+		$('.close-btn').click(function() {
+			$(".popup-bg-black").hide();
+		});
+		$('.payfail-btn').click(function() {
+			$(".popup-bg-black").hide();
+		});
+		//操作按钮
+		$('.export').click(function() {
+			lightyear.loading('show');
+			setTimeout(function() {
+				lightyear.loading('hide');
+				lightyear.notify('导出成功~', 'success', 100, '', 'top', 'center');
+			}, 1e3)
+		})
+		$('.sure-btn').click(function() {
+			lightyear.loading('show');
+			setTimeout(function() {
+				lightyear.loading('hide');
+				lightyear.notify('分配成功~', 'success', 100, '', 'top', 'center');
+			}, 1e3)
+			$(".popup-bg-black").hide();
+		})
+		$(".btn").click(function() {
+			// 下面这行代码zhi就是你要的daoID属性
+			var choiceId = $(this).attr("id");
+			console.log(choiceId)
+
+			if (choiceId == 'sureCommit') {
+				$('.distribute').text('已分配').addClass('new-class').attr('disabled', true);
+				$('.select-lawyer').attr('disabled', true);
+			}
+		});
+		$('.nav-item').click(function(){
+			$(this).addClass('currentB');
+			$(this).siblings().removeClass('currentB');
+		})
+
+		 function fun(id) {
+			$.ajax({url:"../checkcashout/getCashout",
+			        data:{id:id},
+				    dataType:"json",
+				    type: "GET",
+				    success:function (resp) {
+				        console.log(resp);
+                      var js=JSON.parse(resp.data);
+                      var  table="<tr>" + "<td>提现人</td>"+
+										  "<td>店铺</td>"+
+										  "<td>店铺id</td>"+
+										  "<td>返现模式</td>"+
+										  "<td>提现时间</td>"+
+										  "<td>提现前余额</td>"+
+										  "<td>申请提现金额</td>"+
+										  "<td>提现后余额</td>"+
+							     "</tr>";
+
+						$("#tab").append(table);
+                      for (var i=0;i<=js.name.length-1;i++){
+                      	$("#tab").append("<tr>"+ "<td>"+js.nickName+"</td>"+
+								                 "<td>"+js.name[i]+"</td>"+
+								                 "<td>"+js.merid[i]+"</td>"+
+								                 "<td>"+js.modename+"</td>"+
+								                 "<td>"+js.date+"</td>"+
+								                 "<td>"+js.oldbalance[i]+"</td>"+
+								                 "<td>"+js.meridmoney[i]+"</td>"+
+								                 "<td>"+js.newmoney[i]+"</td>"+
+								"</tr>");
+
+					  }
+                      var  selet="<input type='button' class='lf-button' value='关闭' onclick='closefun()'>"
+						$("#tab").append(selet);
+						$('.lf-alert').addClass('lf-alert-info').show();
+
+					},
+				    error:function(){
+						$('.lf-alert').html("暂无数据").addClass('lf-alert-info').show().delay(2000).fadeOut();
+					}
+
+
+			})
+		 }
+
+
+
+    function closefun() {
+		$('.lf-alert').hide();
+		$("#tab").children().remove()
+	}
+
+
+
+
+
+
+
+	</script>
+</html>

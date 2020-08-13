@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>签名</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../css/news.css" rel="stylesheet">
+</head>
+
+<body style="background-color: #f2f2f2;">
+
+<div class="sign-box">
+    <img class="sign-pic" src="./img/logo.png">
+    <div class="btn-box">
+        <button class="next-btn" id="nextBtn1">去签名</button>
+        <button class="next-btn" id="nextBtn2" onclick="btn2()">文件预览</button>
+    </div>
+</div>
+
+
+<!--<div class="form">
+    <form action="../agreement/wordToPdf" method="get">
+        <div class="email-box">
+            <div> 用户电子邮箱</div>
+            <input type="email" name="userEmail">
+        </div>
+        <input class="send" type="submit" value="发送">
+    </form>
+</div>-->
+
+<div class="merchant-group" style="display: none;">
+    <input type="file" accept="image/*" value="111" id="qianmingInput" class="lf-hide"/>
+    <img id="image"/>
+</div>
+<div class="lf-black-bg" style="visibility: hidden">
+    <div class="lf-popup">
+        <div class="popup-title">
+            <h1>请签名</h1>
+            <div class="colse-btn">关闭</div>
+        </div>
+        <div class="lf-clear-fixed"></div>
+        <div id="box"></div>
+        <button class="rest" id="popupReset">重置</button>
+        <button class="rest" id="popupSure" style="float: right">提交</button>
+    </div>
+</div>
+
+</body>
+<script src="../js/jquery-1.11.1.min.js"></script>
+<script src="../js/jSignature.min.js"></script>
+<script>
+
+    function btn2() {
+        $.ajax({
+            url: '../agreement/getPreFileName',
+            method: 'POST',
+            success(data) {
+                window.location.href = "https://view.officeapps.live.com/op/view.aspx?src=https://wuye.lianfubiz.com/img/" + data;
+
+            }
+        });
+    }
+
+    $('.colse-btn').click(function () {
+        $('.lf-black-bg').css("visibility", "hidden");
+    });
+    $('#nextBtn1').click(function () {
+        $('.lf-black-bg').css("visibility", "visible");
+    })
+
+    $(function () {
+        $("#box").jSignature();//初始化画板，初始化之后就可以进行操作
+    })
+
+    function dataURItoBlob(base64Data) {
+        var byteString;
+        if (base64Data.split(',')[0].indexOf('base64') >= 0)
+            byteString = atob(base64Data.split(',')[1]);
+        else
+            byteString = unescape(base64Data.split(',')[1]);
+        var mimeString = base64Data.split(',')[0].split(':')[1].split(';')[0];
+        var ia = new Uint8Array(byteString.length);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ia], {type: mimeString});
+    }
+
+    //点击事件为获取base64数据，生成图片
+    document.getElementById('popupSure').onclick = function () {
+        var datapair = $("#box").jSignature("getData", "image");
+        console.log(datapair);
+        $("#image").attr('src', 'data:' + datapair[0] + "," + datapair[1]);
+        console.log($("#image").attr("src"));
+
+        var blob = dataURItoBlob($("#image").attr("src")); // 上一步中的函数
+        var fd = new FormData();
+        fd.append("file", blob, 'image.png');
+
+        $.ajax({
+            url: '../agreement/signPic',
+            method: 'POST',
+            processData: false, // 必须
+            contentType: false, // 必须
+            dataType: 'json',
+            data: fd,
+            success(data) {
+                console.log(data);
+                if (data.code == 200) {
+                    alert("成功了");
+                } else {
+                    alert("出错了");
+                }
+            }
+        });
+    }
+
+    document.getElementById('popupReset').onclick = function () {
+        $("#box").jSignature("reset");
+    }
+
+
+</script>
+
+</html>

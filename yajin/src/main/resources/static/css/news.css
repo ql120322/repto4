@@ -1,0 +1,330 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/*签名样式*/
+
+#box {
+    width: 300px;
+    height: 500px;
+    border: 2px solid #eaeaea;
+}
+
+canvas {
+    height: 500px !important;
+}
+
+.sign-box {
+    width: 100%;
+    background-image: url("../img/bg_02.png");
+    background-size: 100%;
+}
+
+.sign-pic {
+    width: 200px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    padding: 30px 0;
+}
+
+.btn-box {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 30px;
+}
+
+#nextBtn1 {
+    width: 25%;
+    background-color: #ffbc3c;
+    border: none;
+    outline: none;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.21);
+}
+
+#nextBtn2 {
+    width: 25%;
+    background-color: #ffbc3c;
+    border: none;
+    outline: none;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.21);
+}
+
+.form {
+    margin: 40px 15px 0 15px;
+    height: auto;
+}
+
+.email-box {
+    display: flex;
+    background-color: white;
+    padding: 0 15px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.07);
+}
+
+.email-box div {
+    height: auto;
+}
+
+.email-box input {
+    border: none;
+    flex: 1;
+    outline: none;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    color: #999999;
+    font-size: 16px;
+    margin-left: 10px;
+    line-height: 40px;
+}
+
+.send {
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    border-radius: 38px;
+    background-image: -moz-linear-gradient(0deg, rgb(33, 103, 252) 0%, rgb(87, 178, 253) 100%);
+    background-image: -webkit-linear-gradient(0deg, rgb(33, 103, 252) 0%, rgb(87, 178, 253) 100%);
+    background-image: -ms-linear-gradient(0deg, rgb(33, 103, 252) 0%, rgb(87, 178, 253) 100%);
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+    height: 40px;
+    line-height: 40px;
+    margin-top: 60px;
+    color: white;
+    font-size: 16px;
+    border: none;
+    outline: none;
+}
+
+.lf-black-bg {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1111;
+    overflow: scroll;
+}
+
+.lf-popup {
+    background: white;
+    position: absolute;
+    left: 50%;
+    margin-left: -45%;
+    top: 5%;
+    border-radius: 5px;
+    width: 340px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.popup-title h1 {
+    font-size: 16px;
+    line-height: 30px;
+    text-align: center;
+}
+
+.colse-btn {
+    background-size: 22px;
+    width: 35px;
+    height: 22px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+.rest {
+    padding: 7px 20px;
+    background-color: #438bff;
+    color: white;
+    border: none;
+    outline: none;
+    margin-top: 10px;
+}
+
+/*添加设备样式*/
+.lf-p0 {
+    padding: 0 !important;
+}
+
+form {
+    width: 100%;
+}
+
+#main {
+    height: auto;
+}
+
+.all-top {
+    background-color: white;
+    height: auto;
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.07);
+}
+
+.pro-header {
+    height: 44px;
+    line-height: 44px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.lf-border-top {
+    border-top: 1px solid #f2f2f2;
+}
+
+.right-blue {
+    width: 4px;
+    height: 24px;
+    background-color: #2871FC;
+}
+
+.basic {
+    margin-left: 15px;
+    font-size: 18px;
+}
+
+.cooperation-box {
+    display: flex;
+    margin: 0px 15px;
+    height: 40px;
+    border-bottom: 1px solid #f2f2f2;
+    align-items: center;
+}
+
+.cooperation {
+    line-height: 40px;
+    flex: 1;
+    font-size: 14px;
+}
+
+.down {
+    width: 12px;
+    height: 7px;
+}
+
+.chose {
+    width: 140px;
+    border: none;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: right;
+    color: #999999;
+    max-width: 120px;
+    outline: none;
+    background-color: transparent;
+}
+
+select {
+    padding: 0px 15px;
+    border: none;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: right;
+    color: #999999;
+    max-width: 120px;
+    outline: none;
+    background-color: transparent;
+}
+
+.fill-inpt {
+    display: flex;
+    height: 40px;
+    margin: 0 15px;
+    border-bottom: 1px solid #f2f2f2;
+    align-items: center;
+}
+
+.fill-inpt div {
+    height: auto;
+    margin-right: 30px;
+    font-size: 14px;
+}
+
+.fill-inpt input {
+    height: 39px;
+    line-height: 39px;
+    color: #999999;
+    flex: 1;
+    border: none;
+    outline: none;
+    text-align: right;
+    font-family: Arial, Helvetica, sans-serif;
+    outline: none;
+    font-size: 14px;
+}
+
+#device {
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.07);
+    background-color: white;
+}
+
+.type {
+    flex: 1;
+    font-size: 14px;
+}
+
+.type select {
+    display: block;
+    text-align: right;
+}
+
+.btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn button {
+    width: 140px;
+    background-color: #FFA42F;
+    height: 40px;
+    line-height: 40px;
+    border: none;
+    outline: none;
+    color: white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.sure {
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    border-radius: 38px;
+    background-image: -moz-linear-gradient(0deg, rgb(33, 103, 252) 0%, rgb(87, 178, 253) 100%);
+    background-image: -webkit-linear-gradient(0deg, rgb(33, 103, 252) 0%, rgb(87, 178, 253) 100%);
+    background-image: -ms-linear-gradient(0deg, rgb(33, 103, 252) 0%, rgb(87, 178, 253) 100%);
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+    height: 40px;
+    line-height: 40px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    color: white;
+    font-size: 16px;
+    border: none;
+    outline: none;
+}

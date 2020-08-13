@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="lf_scancode_accounts:war">
+    <output-path>$PROJECT_DIR$/yajin/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>lf_scancode_accounts</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="lf_scancode_accounts.war">
+      <element id="artifact" artifact-name="lf_scancode_accounts:war exploded" />
+    </root>
+  </artifact>
+</component>

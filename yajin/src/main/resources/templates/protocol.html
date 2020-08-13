@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>添加设备</title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../css/news.css" rel="stylesheet">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/lf-grid.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/daterangepicker.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="css/swiper.min.css" rel="stylesheet">
+    <script src="js/swiper.min.js"></script>
+    <script src="js/dyselect.js"></script>
+    <script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <link href="css/mescroll.min.css" rel="stylesheet">
+    <link href="../css/cashout_main.css" rel="stylesheet">
+    <script src="js/mescroll.min.js"></script>
+</head>
+
+
+
+
+
+<body style="background-color: #f2f2f2;">
+
+<form action="../agreement/generateWordFile" onsubmit="return fun();" method="post">
+    <div class="col-xs-12 lf-p0" id="main">
+        <div class="all-top">
+            <div class="pro-header lf-border-top">
+                <div class="right-blue"></div>
+                <div class="basic">合同基本信息</div>
+            </div>
+
+            <div class="cooperation-box" id="cooperationPolicy">
+                <!--合作政策 -->
+                <div class="cooperation">合作政策</div>
+                <select class="chose" name="cooperationPolicy">
+                    <option value="0">请选择合作模式</option>
+                    <option value="商户日使用我们通道交易额达到2500元，我们投入设备，收取押金，仅限每户商户投入一台设备的标准。">
+                        商户日使用我们通道交易额达到2500元，我们投入设备，收取押金，仅限每户商户投入一台设备的标准。
+                    </option>
+                    <option value="商户使用我们通道日交易额达到1500元-2500元之间，我们收取押金，补贴800元每户。">
+                        商户使用我们通道日交易额达到1500元-2500元之间，我们收取押金，补贴800元每户。
+                    </option>
+                    <option value="商户使用我们通道日交易额低于1500元，我们不投入任何资金，可以合作支付渠道，给渠道千1.5的底结价。">
+                        商户使用我们通道日交易额低于1500元，我们不投入任何资金，可以合作支付渠道，给渠道千1.5的底结价。
+                    </option>
+                </select>
+            </div>
+
+            <div class="cooperation-box" id="depositRefund">
+                <!--押金返还策略 -->
+                <div class="cooperation"> 押金返还策略</div>
+                <select class="chose" name="depositRefund">
+                    <option value="0">请选择押金返还策略</option>
+                    <option value="按照3年36个月，每个月返还定额押金，如商户觉得时间长可接受2年24个月，押金返还完毕截止，月返。">
+                        按照3年36个月，每个月返还定额押金，如商户觉得时间长可接受2年24个月，押金返还完毕截止，月返。
+                    </option>
+                    <option value="按照每笔大于5元的交易返还0.3元/笔返还，押金返还完毕截止，月返。">按照每笔大于5元的交易返还0.3元/笔返还，押金返还完毕截止，月返。
+                    </option>
+                    <option value="对于客单价比较高的商家采取每笔交易额返还交易额千1的钱的方式返还押金，直至押金返还完毕。">
+                        对于客单价比较高的商家采取每笔交易额返还交易额千1的钱的方式返还押金，直至押金返还完毕。
+                    </option>
+                </select>
+            </div>
+
+            <div id="data">
+                <div class="fill-inpt">
+                    <div> 微信费率</div>
+                    <input type="text" name="wx_zhi" placeholder="费率" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div> 支付宝费率</div>
+                    <input type="text" name="zfb" placeholder="费率" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div> 签订时间</div>
+                    <input type="date" name="Atime" placeholder="签订时间" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>签订地点</div>
+                    <input type="text" name="Asite" placeholder="签订地点" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>税号</div>
+                    <input type="text" name="taxId" placeholder="请输入税号" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>电话</div>
+                    <input type="text" name="phone" placeholder="请输入电话" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>开户行</div>
+                    <input type="text" name="bank" placeholder="请输入开户行" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>账号</div>
+                    <input type="text" name="accountNumber" placeholder="请输入账号" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>公司</div>
+                    <input type="text" name="companyName" placeholder="请输入公司名称" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>地 址</div>
+                    <input type="text" name="address" placeholder="请输入地址" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div> 开始日期</div>
+                    <input type="date" name="startDate" placeholder="请输入地址" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div> 结束日期</div>
+                    <input type="date" name="endDate" placeholder="请输入地址" value=""/>
+                </div>
+
+
+                <div class="fill-inpt">
+                    <div>送达地址</div>
+                    <input type="text" name="AddressOfService" placeholder="请输入送达地址" value=""/>
+                </div>
+
+
+                <div class="fill-inpt">
+                    <div>联系人</div>
+                    <input type="text" name="Thecontact" placeholder="请输入联系人" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>联系电话</div>
+                    <input type="text" name="Contactphonenumber" placeholder="请输入联系电话" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>是否电子送达</div>
+                    <input type="text" name="Electronicdelivery" placeholder="请输入同意/不同意" value=""/>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>电子邮箱</div>
+                    <input type="text" name="EMail" placeholder="请输入电子邮箱" value=""/>
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+        <div id="device" style="margin-top: 20px">
+            <div class="pro-header">
+                <div class="right-blue"></div>
+                <div class="basic">设备信息</div>
+            </div>
+
+            <div class="tab" id="tabid">
+                <div class="fill-inpt">
+                    <span class="type">设备类型</span>
+                    <select onchange="seldev(1)" name="protocolItems[0].devType" id="devType_1">
+                    </select>
+                </div>
+
+                <div class="fill-inpt">
+                    <span class="type">设备名称</span>
+                    <select id="devName_1" name="protocolItems[0].devName" onchange="selectMoney(1)">
+                        <option>
+                            请选择
+                        </option>
+                    </select>
+                </div>
+
+                <div class="fill-inpt">
+                    <div>单价</div>
+                    <input id="money_1" value="0" type="number" name="protocolItems[0].money" readonly="readonly">
+                </div>
+
+                <div class="fill-inpt">
+                    <div>数量</div>
+                    <input id="number_1" onchange="updateMoney(1)" type="number" name="protocolItems[0].number"
+                           value="1">
+                </div>
+
+                <div class="fill-inpt">
+                    <div>合计</div>
+                    <input id="totalMoney_1" type="number" name="protocolItems[0].totalMoney" readonly="readonly"
+                           value="0">
+                </div>
+            </div>
+
+            <div class="btn">
+                <button type="button" onclick="addDev()">添加设备</button>
+            </div>
+
+        </div>
+
+        <input class="sure" type="submit" value="确认">
+
+
+
+
+
+    </div>
+
+
+    <div class="lf-alert">
+
+
+
+    </div>
+</form>
+
+
+
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+
+<script>
+    let typeNumber = 1;
+    var index=0;
+    var dev = [
+        {name: '请选择', id: 0, devName: [{name: '请选择', money: 0}]},
+        {
+            name: '一体机',
+            id: 1,
+            devName: [{name: 'On poslite', money: 1099}, {name: 'On posmini', money: 1699}, {
+                name: 'On posse',
+                money: 2699
+            }, {name: 'On posmini2C', money: 2699}, {name: 'On pos2', money: 3499}, {
+                name: '红云2W (单屏)',
+                money: 1799
+            }, {name: '红云2W(双屏)', money: 2299}, {name: '红云2F(双屏)', money: 2499}]
+        },
+        {
+            name: '软件',
+            id: 2,
+            devName: [{name: '基础版', money: 120}, {name: '外卖版', money: 320}, {name: '高级版', money: 480}, {
+                name: '旗舰版',
+                money: 720
+            }, {name: '行业纵深版(饮品、火锅、西餐、美食城、便利店、生鲜、烘焙)', money: 900},]
+        },
+        {
+            name: '打印机',
+            id: 3,
+            devName: [{name: '后厨网口P310', money: 519}, {name: '前台58USB打印机', money: 188}, {
+                name: '标签热敏打印机',
+                money: 659
+            }, {name: '标签热敏打印机', money: 299}]
+        }];
+    $(document).ready(function () {
+        var select = "";
+        for (var i = 0; i < 4; i++) {
+            select += "<option value='" + dev[i].id + "'>" + dev[i].name + "</option>";
+        }
+        $('#devType_1').html(select);
+    });
+
+    function seldev(type) {
+        var id = $("#devType_" + type + " option:selected").val();
+        var select = "";
+        for (var i = 0; i < dev[id].devName.length; i++) {
+            var name = dev[id].devName[i].name;
+            select += "<option value='" + name + '_' + i + "'>" + name + "</option>";
+        }
+        $('#money_' + type).val(dev[id].devName[0].money);
+        $('#totalMoney_' + type).val(dev[id].devName[0].money * $("#number_" + type).val());
+        $('#devName_' + type).html(select);
+    }
+
+    function selectMoney(type) {
+        var devType = $("#devType_" + type + " option:selected").val();
+        var devName = $("#devName_" + type + " option:selected").val();
+        var id = devName.split('_')[1];
+        $('#money_' + type).val(dev[devType].devName[id].money);
+        $('#totalMoney_' + type).val(dev[devType].devName[id].money * $("#number_" + type).val());
+    }
+
+    function updateMoney(type) {
+        var devType = $("#devType_" + type + " option:selected").val();
+        var devName = $("#devName_" + type + " option:selected").val();
+        var id = devName.split('_')[1];
+        $('#totalMoney_' + type).val(dev[devType].devName[id].money * $("#number_" + type).val());
+    }
+
+    function addDev() {
+        // debugger;
+        $('.btn').hide();
+
+        var arr= Date.parse(new Date());
+        var temp = '';
+        for (var i = 0; i < 4; i++) {
+            temp += "<option value='" + dev[i].id + "'>" + dev[i].name + "</option>";
+        }
+        var select = '<div class="tab" id="tab'+arr+'">\n' +
+            '                  <div class="type" ><button type="button" id="id'+arr+'" value="tab'+arr+'" onclick="removeDev(this)">x</button></div>\n'+
+            '                  <div class="fill-inpt">' +
+            '                   <span class="type">设备类型：</span>\n' +
+            '                   <select onchange="seldev(' + (typeNumber + 1) + ')" name="protocolItems[' + typeNumber + '].devType" id="devType_' + (typeNumber + 1) + '">\n' +
+            '                   ' + temp + '</select>\n' +
+            '                   </div>' +
+            '                   <div class="fill-inpt">' +
+            '                   <span class="type">设备名称：</span>\n' +
+            '                   <select id="devName_' + (typeNumber + 1) + '" name="protocolItems[' + typeNumber + '].devName" onchange="selectMoney(' + (typeNumber + 1) + ')">\n' +
+            '                       <option>\n' +
+            '                           请选择\n' +
+            '                       </option>  //一级选择器\n' +
+            '\n' +
+            '                   </select>\n' +
+            '                  </div>' +
+            '                   <div class="fill-inpt" ><div>单价：</div> <input id="money_' + (typeNumber + 1) + '" value="0" type="number" name="protocolItems[' + typeNumber + '].money" readonly="readonly"></div>\n' +
+            '                   <div class="fill-inpt" > <div>数量：</div> <input id="number_' + (typeNumber + 1) + '" onchange="updateMoney(1)" type="number" name="protocolItems[' + typeNumber + '].number" value="1"></div>\n' +
+            '                   <div class="fill-inpt" ><div>合计：</div> <input id="totalMoney_' + (typeNumber + 1) + '" type="number" name="protocolItems[' + typeNumber + '].totalMoney" readonly="readonly" value=""></div>\n' +
+            '               </div>\n' +
+            '               <div class="btn"><button type="button" onclick="addDev()">添加设备</button></div>' ;
+
+        $('#device').append(select);
+        typeNumber++;
+
+
+    }
+    function removeDev(obj) {
+         var arr="#";
+         arr+=($(obj).val());
+         $(arr).remove();
+
+    }
+
+
+    function  fun() {
+         var boo=true;
+         var arr="";
+         var val="";
+         $("#popBox").css("height","200px");
+        $("#popBox").css("width","200px");
+            for (var i=0;i<=typeNumber-1;i++) {
+                arr = $("[name='protocolItems[" + i + "].devName']").val();
+                val = $("[name='protocolItems[" + i + "].totalMoney']").val();
+                if (arr == "请选择" || val == "0") {
+                    boo = false;
+                    $('.lf-alert').html("不能为空").addClass('lf-alert-info').show().delay(2000).fadeOut();
+
+                    break;
+                }
+
+            }
+
+          return  boo;
+    }
+
+
+
+
+/*
+
+        var json = [];
+        var boo="";
+        $("#device>div").each(function(){
+            json.push({
+               boo:$(this).find("select").val(),
+            })
+
+            var a=(JSON.stringify(json));
+            var obj=eval(a);
+            alert(obj.boo);
+        });
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+</html>

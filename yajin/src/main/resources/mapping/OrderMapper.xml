@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lianfu.lf_scancode_accounts.mapper.OrderMapper">
+    <select id="selectCashoutMoney" parameterType="java.lang.String" resultType="java.lang.String">
+        select SUM(order_rec_money) from orders where mer_id = #{merid} and order_status = '2' and cashout_type != '1'
+    </select>
+
+    <select id="selectCashoutMoneyModel2" parameterType="java.lang.String" resultType="java.lang.String">
+        select COUNT(order_rec_money) from orders where mer_id = #{merid} and order_status = '2' and cashout_type != '1'
+        and order_rec_money > 500
+    </select>
+
+
+</mapper>

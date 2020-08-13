@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lianfu.lf_scancode_accounts.mapper.CashoutModeMapper">
+    <select id="selectCashoutModeByMersId" resultType="com.lianfu.lf_scancode_accounts.model.Shop">
+        select
+        d.device_cashout_mode cashoutMode,
+        d.device_shop_id merId,
+        sf.mer_name shopName,
+        d.device_code deviceNo,
+        d.device_last_cashout lastCashout,
+        d.device_first_month firstMonthReturn,
+        d.device_normal_month normalMonthReturn,
+        d.device_cash_pledge_receivable receivableCash,
+        d.device_cash_pledge_remainder remainderCash
+        from device d LEFT OUTER JOIN shopconfigs sf
+        on d.device_shop_id = sf.mer_id
+        where
+        d.device_shop_id in
+        <foreach collection="array" item="merId" separator="," open="(" close=")">
+            #{merId}
+        </foreach>
+    </select>
+
+    <select id="seletmodes" parameterType="int" resultType="java.lang.String">
+        select  cashout_mode_name from  cashout_mode where  cashout_mode_id=#{cashout_mode_id}
+
+    </select>
+
+
+</mapper>

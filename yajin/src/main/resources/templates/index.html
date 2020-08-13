@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>门店汇总</title>
+    <link th:href="@{css/lf-grid.css}" rel="stylesheet">
+    <link th:href="@{css/main.css}" rel="stylesheet">
+    <link th:href="@{css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{css/daterangepicker.css}" rel="stylesheet" type="text/css" media="all"/>
+    <link th:href="@{css/swiper.min.css}" rel="stylesheet">
+    <script th:src="@{js/swiper.min.js}"></script>
+    <script th:src="@{js/dyselect.js}"></script>
+    <script th:src="@{js/jquery-1.9.1.min.js}" type="text/javascript"></script>
+    <link th:href="@{css/mescroll.min.css}" rel="stylesheet">
+    <script th:src="@{js/mescroll.min.js}"></script>
+
+</head>
+<style>
+
+</style>
+
+<body style="background-color: #f5f5f5;">
+
+<div class="lf-col-xs-12 lf-col-lg-6 lf-col-lg-offset-3 lf-col-md-5 lf-col-md-offset-2 lf-col-sm-12 lf-p0 mescroll"
+     id="mescroll">
+
+    <div class="login-box">
+        <img class="bgc-pic" th:src="@{img/bgc.png}">
+        <div class="prompt-box">
+            <button class="btn1 sign-input" id="mer_name">全部门店</button>
+            <img class="right-pic" th:src="@{/img/right.png}">
+        </div>
+
+        <div id="app">
+            <div class="select_box select_box1"></div>
+            <div class="select_box select_box2"></div>
+            <div class="select_box select_box3"></div>
+        </div>
+
+        <div class="statistical">
+
+            <div class="total-box">
+                <div class="summary">
+                    <div class="total">当前总金额</div>
+                    <!--                    <button class="summary-btn">汇总</button>-->
+                </div>
+                <div class="total-num" id="total_money"></div>
+
+            </div>
+
+            <div class="all">
+                <div class="order-box">
+                    <div class="today">今日订单数：</div>
+                    <div class="num" id="today_count"></div>
+                </div>
+
+                <div class="order-box">
+                    <div class="today">总订单数：</div>
+                    <div class="num" id="total_count"></div>
+                </div>
+
+            </div>
+
+            <div class="all">
+                <div class="order-box">
+                    <div class="today">今日退款单数：</div>
+                    <div class="num" id="todayrefundCount"></div>
+                </div>
+
+                <div class="order-box">
+                    <div class="today">今日退款总金额：</div>
+                    <div class="num" id="todayrefundMoney"></div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="chose">
+            <button type="button" class="pull-left" id="daterange-btn">
+					<span>
+						日期选择
+					</span>
+            </button>
+        </div>
+
+    </div>
+
+    <div class="main-box" id="orders">
+
+    </div>
+
+    <div class="alert-bgc">
+        <div class="alert-main">
+            <div class="colse-pic">
+                <img id="colse" th:src="@{img/colse.png}">
+            </div>
+            <div class="refund-txt">是否确定退款？</div>
+            <div class="alert-btn">
+                <button class="cancel">取消</button>
+                <button class="determine">确定</button>
+            </div>
+        </div>
+    </div>
+    <div class="lf-alert"></div>
+
+</div>
+</body>
+
+<script th:src="@{/js/moment.js}" type="text/javascript"></script>
+<script th:src="@{/js/daterangepicker.js}" type="text/javascript"></script>
+<script>
+    var mer_name = [];
+    var mer_id = [];
+
+    var mers = '[[${mers}]]';
+    var reg = new RegExp('&quot;', "g")
+    mers = mers.replace(reg, '\"');
+    var str = "";
+    var current_page = 1;
+    var start_date = "";
+    var end_date = "";
+    var mid = -1;
+    var flag = true;
+
+    window.onload = function () {
+        // $('#daterange-btn span').html(moment().format('YYYY-MMMM-D') + '至' + moment().format('YYYY-MMMM-D'));
+        getAllAccount(mers);
+    };
+
+    var mescroll = new MeScroll("mescroll", {
+        down: {
+            callback: downCallback, //下拉刷新的回调,别写成downCallback(),多了括号就自动执行方法了
+            auto: false
+        },
+        up: {
+            callback: upCallback, //上拉加载的回调
+            auto: false,
+            toTop: {
+                //回到顶部按钮
+                src: "./img/top.png", //图片路径,默认null,支持网络图
+                offset: 500 //列表滚动1000px才显示回到顶部按钮
+            },
+            noMoreSize: 0,
+            htmlNodata: '<p class="upwarp-nodata">-- 暂无更多 --</p>',
+            empty: {
+                warpId: 'orders',
+                icon: null,
+                tip: "暂无更多",
+                btntext: "",
+                btnClick: null,
+                supportTap: false
+            }
+        }
+    });
+
+    //下拉刷新的回调
+    function downCallback() {
+        str = "";
+        current_page = 1;
+        if (mid == -1) {
+            getAllAccount(mers)
+        } else {
+            getdatas();
+        }
+    }
+
+    function upCallback() {
+        current_page += 1;
+        console.log(mid)
+        if (mid == -1) {
+            getAllAccount(mers)
+        } else {
+            getdatas();
+        }
+    }
+
+    $('#daterange-btn').daterangepicker({
+            ranges: {
+                '今天': [moment(), moment()],
+                '本周': [moment().startOf('week'), moment().endOf('week')],
+                '本月': [moment().startOf('month'), moment().endOf('month')],
+                // '今年': [moment().startOf('year'), moment().endOf('year')]
+            },
+            startDate: moment(),
+            endDate: moment()
+        },
+        function (start, end) {
+            $('#daterange-btn span').html(start.format('YYYY-MMMM-D') + '至' + end.format('YYYY-MMMM-D'));
+            start_date = start.format('YYYY-MMMM-D');
+            end_date = end.format('YYYY-MMMM-D');
+            mescroll.scrollTo(0, 0);
+            // mescroll.triggerDownScroll();
+            str = "";
+            current_page = 1;
+            console.log(mid)
+            if (mid == -1) {
+                getAllAccount(mers, start_date, end_date);
+            } else {
+                getdatas();
+            }
+        }
+    );
+
+    $(document).ready(function () {
+        $('#reservation').daterangepicker(null,
+            function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+    });
+
+    $(function () {
+        var mersJson = JSON.parse(mers);
+        if (mersJson.length == 1) {
+            $('.btn1').html(mersJson[0].mer_name)
+        } else {
+            $('.btn1').html("全部门店")
+        }
+        // mid = mersJson[0].mer_id;
+        for (var i = 0; i < mersJson.length; i++) {
+            mer_id.push(mersJson[i].mer_id);
+            mer_name.push(mersJson[i].mer_name);
+        }
+        var hgS1 = new selectSwiper({
+            el: '.select_box1',
+            data: mer_name,
+            init: function (index) {
+                if (index !== -1) {
+                    $('.btn1').html(this.data[index]);
+                }
+            },
+
+            okFunUndefind: function () {
+                alert('必须选择一项');
+                return false;
+            },
+
+            okFun: function (index) {
+                if (index != -1) {
+                    mescroll.scrollTo(0, 0);
+                    str = "";
+                    current_page = 1;
+                    $('.btn1').html(this.data[index]);
+                    mid = mer_id[index];
+                    getdatas();
+                }
+            },
+            closeFun: function () {
+                console.log('取消');
+            },
+        });
+
+        $('.btn1').on('click', function () {
+            hgS1.openSelectSwiper();
+        });
+
+
+    });
+
+
+    function getdatas() {
+        $.ajax({
+            type: "GET",
+            url: "getAccountByDate?mer_id=" + mid + "&start_date=" + start_date + "&end_date=" + end_date + "&page=" + current_page,
+            success: function (res) {
+                var resJson = JSON.parse(res);
+                $('#total_money').html("￥" + (resJson.total_money / 100).toFixed(2));
+                $('#total_count').html(resJson.total_count);
+                $('#today_count').html(resJson.today_count);
+                $('#todayrefundMoney').html("￥" + (resJson.todayrefundMoney / 100).toFixed(2));
+                $('#todayrefundCount').html(resJson.todayrefundCount);
+
+                var dataJson = JSON.stringify(resJson.data);
+                var datas = JSON.parse(dataJson).data;
+
+                for (var i = 0; i < datas.length; i++) {
+                    var order = JSON.stringify(datas[i]);
+                    var orderJson = JSON.parse(order);
+                    str += `<div class="center-box">
+            <div class="order-txt">订单号：${orderJson.order_no}</div>
+            <div class="mini-box">店铺名称：${orderJson.company_name}</div>
+            <div class="mini-box">
+                <div class="pay-money">支付金额</div>
+                <div class="price">￥${(orderJson.order_rec_money / 100).toFixed(2)}</div>
+            </div>
+
+            <div class="mini-box">
+                <div class="pay-money">支付时间</div>
+                <div class="time">${orderJson.updated_at}</div>
+            </div>
+
+            <div class="mini-box">
+                <div class="pay-money">支付类型</div>
+                <div class="time">`;
+                    switch (orderJson.pay_type) {
+                        case '1':
+                            str += '工行';
+                            break;
+                        case '2':
+                            str += '微信';
+                            break;
+                        case '3':
+                            str += '支付宝';
+                            break;
+                        case '4':
+                            str += '云闪付';
+                            break;
+                        case '5':
+                            str += '百度钱包';
+                            break;
+                        case '6':
+                            str += '翼支付';
+                            break;
+
+                    }
+                    str += `</div>
+            </div>
+            <div class="refund">
+               <button onclick="refund(${orderJson.order_rec_money},${orderJson.mer_id},'${orderJson.order_no}')">退款</button>
+            </div>
+        </div>`;
+                }
+                $('#orders').html(str);
+                mescroll.endSuccess();
+                if (datas.length < 10) {
+                    // mescroll.showNoMore();
+                    mescroll.showEmpty();
+                    mescroll.hideUpScroll();
+                }
+            },
+            fail: function () {
+                mescroll.endErr();
+            }
+        })
+    }
+
+    function getAllAccount(mers) {
+        $.ajax({
+            type: "GET",
+            url: "getAllAccount",
+            data: {
+                mers: mers,
+                page: current_page,
+                startDate: start_date,
+                endDate: end_date
+            },
+            success: function (res) {
+                var resJson = JSON.parse(res);
+                $('#total_money').html("￥" + (resJson.total_money / 100).toFixed(2));
+                $('#total_count').html(resJson.total_count);
+                $('#today_count').html(resJson.today_count);
+                $('#todayrefundCount').html(resJson.todayrefundCount);
+                $('#todayrefundMoney').html("￥" + (resJson.todayrefundMoney / 100).toFixed(2));
+
+                var dataJson = JSON.stringify(resJson.data);
+                var datas = JSON.parse(dataJson).data;
+
+                for (var i = 0; i < datas.length; i++) {
+                    var order = JSON.stringify(datas[i]);
+                    var orderJson = JSON.parse(order);
+                    str += `<div class="center-box">
+            <div class="order-txt">订单号：${orderJson.order_no}</div>
+            <div class="mini-box">
+                <div class="pay-money">店铺名称</div>
+                <div class="time">${orderJson.company_name}</div>
+            </div>
+            <div class="mini-box">
+                <div class="pay-money">支付金额</div>
+                <div class="price">￥${(orderJson.order_rec_money / 100).toFixed(2)}</div>
+            </div>
+
+            <div class="mini-box">
+                <div class="pay-money">支付时间</div>
+                <div class="time">${orderJson.updated_at}</div>
+            </div>
+
+            <div class="mini-box">
+                <div class="pay-money">支付类型</div>
+                <div class="time">`;
+                    switch (orderJson.pay_type) {
+                        case '1':
+                            str += '工行';
+                            break;
+                        case '2':
+                            str += '微信';
+                            break;
+                        case '3':
+                            str += '支付宝';
+                            break;
+                        case '4':
+                            str += '云闪付';
+                            break;
+                        case '5':
+                            str += '百度钱包';
+                            break;
+                        case '6':
+                            str += '翼支付';
+                            break;
+
+                    }
+                    str += `</div>
+            </div>
+            <div class="refund">
+               <button onclick="refund(${orderJson.order_rec_money},${orderJson.mer_id},'${orderJson.order_no}')">退款</button>
+            </div>
+        </div>`;
+                }
+                $('#orders').html(str);
+                mescroll.endSuccess();
+                if (datas.length < 10) {
+                    // mescroll.showNoMore();
+                    mescroll.showEmpty();
+                    mescroll.hideUpScroll();
+                }
+            },
+            fail: function () {
+                mescroll.endErr();
+            }
+        })
+    }
+
+    var payAmount;
+    var merId;
+    var orderNo;
+
+    function refund(pay_amount, mer_id, order_no) {
+        console.log(order_no)
+        $(".alert-bgc").show();
+        payAmount = pay_amount;
+        merId = mer_id;
+        orderNo = order_no;
+    }
+
+    $(".cancel").click(function () {
+        $(".alert-bgc").hide();
+    });
+
+    $("#colse").click(function () {
+        $(".alert-bgc").hide();
+    });
+    var flag1 = true;
+    $(".determine").click(function () {
+        if (flag1) {
+            flag1 = false;
+            $.ajax({
+                type: "GET",
+                url: "refund",
+                data: {
+                    pay_amount: payAmount,
+                    mer_id: merId,
+                    order_no: orderNo
+                },
+                success: function (res) {
+                    var resJson = JSON.parse(res);
+                    if (resJson.resp_code == '999999') {
+                        $(".alert-bgc").hide();
+                        $('.lf-alert').html(resJson.resp_msg).addClass('lf-alert-info').show().delay(2000).fadeOut();
+                        str = "";
+                        current_page = 1;
+                        if (mid == -1) {
+                            getAllAccount(mers);
+                        } else {
+                            getdatas();
+                        }
+                        // location.reload()
+                    } else {
+                        $(".alert-bgc").hide();
+                        $('.lf-alert').html(resJson.resp_msg).addClass('lf-alert-info').show().delay(2000).fadeOut();
+                    }
+                    flag1 = true;
+                }
+            })
+        }
+
+    });
+
+</script>
+
+</html>

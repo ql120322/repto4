@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>提现页面</title>
+    <link href="../css/cashout_main.css" rel="stylesheet">
+    <script src="../js/jquery-1.9.1.min.js"></script>
+
+
+</head>
+
+<body onload="init()" style="background-color: #f2f2f2;">
+
+<div class="index-box">
+    <div class="index-header">
+        <img class="logo" src="../img/logo.png">
+        <button class="mention-btn" id="list">提现记录</button>
+
+        <div class="content-box">
+            <div class="deposit">
+                <div class="money-txt">押金总额</div>
+                <div class="money" id="deposit"></div>
+            </div>
+            <div class="border"></div>
+            <div class="deposit">
+                <div class="money-txt">可提现金额</div>
+                <div class="money" id="total"></div>
+            </div>
+            <div class="border"></div>
+            <div class="deposit">
+                <div class="money-txt">冻结金额</div>
+                <div class="money" id="freeze"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="main-box" id="box">
+
+    </div>
+
+
+    <button class="return-btn" id="withdrawal">提现</button>
+    <div class="warming">每月只能提现一次，不可重复提现</div>
+
+    <div class="lf-alert"></div>
+
+    <div class="lf-input">
+
+    </div>
+
+
+</div>
+
+<script>
+
+    var cashstate;
+
+    function init() {
+        /*var data = {
+            "code": 200,
+            "success": true,
+            "message": "OK",
+            "data": {
+                "totalDeposit": "2400.00",
+                "totalCashout": "44.60",
+                "shopConfigs": [{
+                    "shopName": "工行测试商户1",
+                    "deviceNo": "xc34818091262",
+                    "merId": "17",
+                    "cashoutMode": "1",
+                    "lastCashout": null,
+                    "firstMonthReturn": "22.30",
+                    "normalMonthReturn": "22.20",
+                    "receivableCash": "800.00",
+                    "remainderCash": "800.00"
+                },
+                {
+                    "shopName": "工行测试商户1",
+                    "deviceNo": "test",
+                    "merId": "17",
+                    "cashoutMode": "1",
+                    "lastCashout": "2020-05-20 13:20:10",
+                    "firstMonthReturn": "22.30",
+                    "normalMonthReturn": "22.20",
+                    "receivableCash": "800.00",
+                    "remainderCash": "800.00"
+                },
+                {
+                    "shopName": "工行测试商户1",
+                    "deviceNo": "123",
+                    "merId": "17",
+                    "cashoutMode": "1",
+                    "lastCashout": null,
+                    "firstMonthReturn": "22.30",
+                    "normalMonthReturn": "22.20",
+                    "receivableCash": "800.00",
+                    "remainderCash": "800.00"
+                }
+                ]
+            },
+            "timestamp": 1589963860675
+        }*/
+        $.ajax({
+            url: "../cashout/getShopConfig", //请求的url地址
+            dataType: "json", //返回格式为json//参数值
+            type: "GET", //请求方式
+            success: function (data) {
+                if (data.code == 200) {
+                    var dataView = document.getElementById("box");
+                    var deposit = document.getElementById('deposit');
+                    var total = document.getElementById('total');
+                    var freeze = document.getElementById('freeze');
+                    dataView.innerHTML = '';
+                    deposit.innerHTML = data.data.totalDeposit;
+                    total.innerHTML = data.data.totalCashout;
+                    freeze.innerHTML = data.data.totalRem;
+                    cashstate = data.data.cashstate;
+                    for (var i = 0; i < data.data.shopConfigs.length; i++) {
+                        cashstate = data.data.shopConfigs[i].cashstate;
+                        dataView.innerHTML += `
+                        <div class="main-header">
+                            <div class="border-blue"></div>
+                            <div class="shop-name">${data.data.shopConfigs[i].shopName}</div>
+                            <div class="num">${data.data.shopConfigs[i].deviceNo}</div>
+                        </div>`
+                    }
+                } else {
+                    window.location.href = "../cashout/gotoErrorPage";
+                }
+            }
+        })
+
+
+    }
+
+    $("#list").click(function () {
+        window.location.href = "../cashout/gotoList";
+    });
+
+    $(document).ready(function () {
+      /*  var name = $.cookie("namecookie");
+        var number = $.cookie("numbercookie");
+        if ((name==null || name =="")&& (number==null || number=="")) {
+            var selet = "<input type='text' placeholder='收款人姓名' id='nameid' style='height: 30px;width: 180px'><br>" +
+                "<input type='text' placeholder='收款人储蓄卡号' id='account-numberid' style='height: 30px;width: 180px'><br>" +
+                "<input type='button' value='关闭' id='closeid'>"
+        }
+        if ((name!=null || name !="")&& (number!=null || number!="")) {
+            var selet = "<input type='text'  id='nameid' name='cashout_payee' value='" + name + "' style='height: 30px;width: 180px'><br>" +
+                "<input type='text'  id='account-numberid' name='cashout_account-number' value='" + number + "' style='height: 30px;width: 180px'><br>" +
+                "<input type='button' value='关闭' id='closeid'>"
+        }*/
+        $("#withdrawal").one("click", (function () {
+
+
+
+/*
+            if (cashstate && (totalmoney != '0' || totalmoney != '0.00')) {
+                $('.lf-input').append(selet).addClass('lf-alert-info').show();
+
+            }*/
+            var totalmoney = document.getElementById('total').innerHTML;
+            if (totalmoney == '0' || totalmoney == '0.00') {
+                $('.lf-alert').html('无可提现金额').addClass('lf-alert-info').show().delay(2000).fadeOut();
+                return false;
+            }
+            if (!cashstate) {
+                $('.lf-alert').html('本月已提现！').addClass('lf-alert-info').show().delay(2000).fadeOut();
+                return false;
+            }
+
+
+
+/*
+            var name = $("#nameid").val();
+            var number = $("#account-numberid").val();
+            alert(name + "." + number);
+            $.cookie("namecookie", name);
+            $.cookie("numbercookie", number);*/
+
+            console.log(totalmoney);
+           /* $('.lf-input').css("display", "none");*/
+            $.ajax({
+                url: '../cashout/cashoutMoney',
+                type: 'get',
+                data: {
+                    money: totalmoney,
+                   /* name:name,
+                    number:number*/
+
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var msg = data.message;
+                    $('.lf-alert').html(msg == 'OK' ? "已提交，请等待审核（3-5个工作日内）" : '提现失败').addClass('lf-alert-info').show().delay(2000).fadeOut();
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000)
+                }
+            })
+        }))
+    })
+</script>
+</body>
+
+</html>

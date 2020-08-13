@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lianfu.lf_scancode_accounts.mapper.CashoutOrderMapper">
+    <insert id="addCashoutOrder" parameterType="com.lianfu.lf_scancode_accounts.model.CashoutOrder">
+        insert into cashout_order
+        VALUES(#{cashoutOrderId},#{cashoutOrderNo},#{cashoutDate},#{cashoutMoney},#{cashoutOpenId},#{cashoutStatus},#{cashoutnickName},#{cashoutmerid},#{cashoutmode},#{cashoutoldbalance},#{cashoutmeridmoney},#{cashoutnewmoney})
+    </insert>
+    <update id="updateDevice" parameterType="com.lianfu.lf_scancode_accounts.model.Shop">
+        update device d
+        set d.device_last_cashout = #{lastCashout},
+        d.device_cash_pledge_remainder = #{remainderCash}/*updateRemainderCash*/
+        where d.device_code = #{deviceNo}
+    </update>
+    <update id="updateOrders">
+        update orders set cashout_type = '1' where mer_id = #{merId} and order_status = '2'
+    </update>
+
+    <select id="getCashoutOrders" parameterType="string"
+            resultType="com.lianfu.lf_scancode_accounts.model.CashoutOrder">
+        select
+        co.cashout_order_id cashoutOrderId,
+        co.cashout_order_no cashoutOrderNo,
+        co.cashout_date cashoutDate,
+        co.cashout_money cashoutMoney,
+        co.cashout_open_id cashoutOpenId,
+        co.cashout_status cashoutStatus,
+        wu.nickName wechatUserName
+        from cashout_order co LEFT OUTER JOIN wx_user wu
+        on co.cashout_open_id = wu.open_id
+        WHERE co.cashout_open_id = #{openid}
+    </select>
+
+      <!-- 押金审核添加 start-->
+    <select id="seletCashoutOrders" resultType="com.lianfu.lf_scancode_accounts.model.CashoutOrder" >
+        select cashout_order_id,
+               cashout_money,
+               cashout_open_id,
+               cashout_status,
+               cashout_nickName,
+               cashout_merid,
+               cashout_mode,
+               cashout_oldbalance,
+               cashout_merid_money,
+               cashout_newmoney
+               from  cashout_order where cashout_status=2
+
+
+    </select>
+
+
+   <select id="seletCashoutOrdersWhereId" parameterType="int" resultType="com.lianfu.lf_scancode_accounts.model.CashoutOrder">
+      select  * from  cashout_order where cashout_order_id=#{cashout_order_id}
+   </select>
+ <!--end -->
+
+
+</mapper>

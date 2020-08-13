@@ -1,0 +1,67 @@
+spring:
+  mail:
+    #邮件协议smtp
+    host: smtp.163.com
+    #发送者的邮件的用户名
+    username: lianfuheat@163.com
+    #使用的编码
+    default-encoding: utf-8
+    #移动端客户授权码(在邮箱中设置)
+    password: lianfu123
+    port: 465
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+  resources:
+    static-locations: file:${file.uploadFolder},classpath:/static/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/templates/
+  thymeleaf:
+    cache: false
+    mode: HTML5
+    encoding: UTF-8
+  datasource:
+    url: jdbc:mysql://localhost/lfpay?serverTimezone=UTC
+    #url: jdbc:mysql://rm-m5e7523t24326u9638o.mysql.rds.aliyuncs.com/lfpay?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    #serverTimezone=UTC
+    #url: jdbc:mysql://127.0.0.1:3306/ysh_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    #password: Lianfukeji666
+    password: 123456
+    #Lianfukeji666
+    #password: 123
+    driverclassname: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+#    prefix: classpath:/static
+#  mvc:
+#    static-path-pattern :/static/**:
+mybatis:
+  configuration:
+    log-impl=org: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.lianfu.lf_scancode_accounts.model.*
+
+
+pagehelper:
+  helper-dialect: mysql
+  params: count=countSql
+  reasonable: true
+  support-methods-arguments: true
+
+
+#jodconverter:
+  #local:
+    #enabled: true
+   #kill-existing-process: true
+   # max-tasks-per-process: 100
+    #portNumbers: 8100,8101,8102,8103
+    #office-home: /usr/bin
+
+
+server:
+  port: 8099
+

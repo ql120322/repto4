@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>提现记录</title>
+    <link href="../css/cashout_main.css" rel="stylesheet">
+    <script src="../js/jquery-1.9.1.min.js"></script>
+</head>
+
+<body onload="list()" style="background-color: #f2f2f2;">
+
+<div class="list-box" id="listbox">
+    <!-- <div class="list-content">
+        <div class="main">
+            <div class="time">小熊</div>
+            <div class="time color">2020-5-20 10:30</div>
+        </div>
+        <div class="price">￥600.00</div>
+    </div> -->
+    <button class="return-btn" id="return">返回</button>
+</div>
+<script>
+    function list() {
+        $.ajax({
+            url: "../cashout/getCashoutOrders", //请求的url地址
+            dataType: "json", //返回格式为json//参数值
+            type: "GET", //请求方式
+            success: function (retmsg) {
+                var dataView = document.getElementById("listbox");
+                dataView.innerHTML = '';
+
+                if (retmsg.code == 200) {
+                    if (retmsg.data.length == 0) {
+                        dataView.innerHTML += `
+                            <div class="list-content">
+                                <span>暂无记录!</span>
+                            </div>`
+                        return
+                    }
+                    for (var i = 0; i < retmsg.data.length; i++) {
+
+                        var state = "";
+                        if (retmsg.data[i].cashoutStatus == 1) {
+                            state = "提现成功！";
+                        } else {
+                            state = "等待审核！";
+                        }
+
+                        dataView.innerHTML += `
+                            <div class="list-content">
+                                <div class="main">
+                                  <div class="time">${state}</div>
+                                 <div class="time color">${retmsg.data[i].cashoutDate}</div>
+                                </div>
+                                <div class="price">￥${retmsg.data[i].cashoutMoney}</div>
+                            </div>`
+                    }
+                    ;
+                } else {
+                    alert("请稍候在试")
+                }
+            }
+        })
+    }
+
+
+</script>
+</body>
+
+</html>

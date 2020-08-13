@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lianfu.lf_scancode_accounts.mapper.Lf_glMapper">
+     <!-- 留这一个 在这项目里-->
+    <insert id="insetoLf_gl" parameterType="com.lianfu.lf_scancode_accounts.model.Lf_gl">
+        insert into lf_gl(filename,filepath,stardate,download,contractname,state,endDate,email,phone,Thecontact,Electronicdelivery,lfname)
+                        values(#{filename},#{filepath},#{stardate},#{download},#{contractname},#{state},#{endDate},
+                                 #{email},#{phone},#{Thecontact},#{Electronicdelivery},#{lfname})
+    </insert>
+
+
+
+
+
+
+</mapper>
